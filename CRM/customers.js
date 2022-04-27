@@ -1,65 +1,96 @@
-let user1 = {
+/* let user1 = {
   username: "aya",
-  password: "an amazing password"
-};
+  password: "an amazing password",
+}; */
 
-let customers = [user1];
+//let this.list = [user1];
 
 class User {
-  constructor(username, password){
+  constructor(username, password) {
     this.username = username;
     this.password = password;
   }
-
 }
 
-
-//GET RESPONSE FROM THE TERMINAL
-const givenUser = process.argv.slice(2)[0];
-
-//RECIEVE USER AND ADD USERNAME AND PASSWORD
-function newUser(user){
-if(user){
-    let newUser = new User(user, generatePassword());
-    customers.push(newUser);
-   }else {
-     console.log('invalid username');
-     return;
-   }
-}
 
 //generate password
 function generatePassword() {
   let length = 8,
-      charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-      retVal = "";
+    charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+    retVal = "";
   for (let i = 0, n = charset.length; i < length; ++i) {
-      retVal += charset.charAt(Math.floor(Math.random() * n));
+    retVal += charset.charAt(Math.floor(Math.random() * n));
   }
   return retVal;
 }
 
-//print to console all users currently in customers array
-function printArrayIntoLog(){
-for(i = 0; i < customers.length; i++){
+const customers = {
+  list: [],
 
- console.log(customers[i]);
- 
-}
-//log users in string from customers array
-for (const user of customers){
-  console.log('username:', user.username, '|  password:', user.password);
-}
+  addCustomer: function() {
+    const userA = process.argv.slice(2);
+    if (userA) {
+      let newUser = new User(userA, generatePassword());
+      this.list.push(newUser);
+    } else {
+      console.log("invalid username");
+      return;
+    }
+  },
+
+  printArrayIntoLog: function(){
+    for (i = 0; i < this.list.length; i++) {
+      console.log(this.list[i]);
+    }
+    //log users in string from this.list array
+    for (const userA of this.list) {
+      console.log("username:", userA.username, "|  password:", userA.password);
+    }
+  }
+
 }
 
+customers.addCustomer();
+customers.printArrayIntoLog();
 
+module.exports = customers;
+
+
+
+
+
+
+
+
+//RECIEVE USER AND ADD USERNAME AND PASSWORD
+/* function newUser() {
+  const userA = process.argv.slice(2);
+  if (userA) {
+    let newUser = new User(userA, generatePassword());
+    this.list.push(newUser);
+  } else {
+    console.log("invalid username");
+    return;
+  }
+} */
+
+
+
+//print to console all users currently in this.list array
+/* function printArrayIntoLog() {
+  for (i = 0; i < this.list.length; i++) {
+    console.log(this.list[i]);
+  }
+  //log users in string from this.list array
+  for (const userA of this.list) {
+    console.log("username:", userA.username, "|  password:", userA.password);
+  }
+} */
 
 //CONSOLE LOGS FOR CHECKUPS
-console.log('given user = ', givenUser);
-/* console.log(JSON.stringify(customers[0])); */
-/* console.log('new user = ', newUser()); */
-
+//console.log("given userA = ");
+/* console.log(JSON.stringify(this.list[0])); */
+/* console.log('new userA = ', newUser()); */
 
 //EXECUTE FUNCTIONS
-newUser(givenUser);
-printArrayIntoLog();
+
