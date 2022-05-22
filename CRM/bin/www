@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('crm:server');
 var http = require('http');
+const socketio = require('socket.io');
 
 /**
  * Get port from environment and store in Express.
@@ -21,6 +22,20 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+//CREATES THE SOCKET SERVER - on top of the http server
+const io = socketio(server);
+
+io.on('connection', (socket)=>{
+  console.log('A user has connected');
+  
+  socket.on('chat message', msg =>{
+    io.emit('chat message', msg);
+  })
+
+  socket.on('disconnect', ()=>{
+    console.log('A user has disconnected');
+  })
+})
 /**
  * Listen on provided port, on all network interfaces.
  */

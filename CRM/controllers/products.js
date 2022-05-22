@@ -1,28 +1,40 @@
-const { search } = require('../routes');
 const database = require('./database');
+const joi = require ('joi');
+const fs = require('fs');
+const path = require('path');
+
 
 module.exports = {
     addProduct: async function (req, res, next) {
-        const qs = req.body;
-        const name = qs.name;
-        const desc = qs.desc;
-        const price = qs.price;
+        const reqBody = req.body;
+    
 
-        if (!name || name.length === 0) {
-            throw ('ERROR: name is empty');
+        const schema = joi.object({
+            name: joi.string().required().min(2).max(100),
+            desc: joi.string().required().max(300),
+            price: joi.number().required(),
+        });
+        
+        const {error} = schema.validate(reqBody);
+
+        if (error){
+            res.send(`Error in creating product. Error:${error}`);
+            return;
         }
+        
 
         const sql = "INSERT INTO products(name, description, price)" +
         " VALUES(?,?,?);";
         try{
-            const result = await database.query(sql, [name, desc, price]);
+            const result = await database.query(sql, [reqBody.name, reqBody.desc, reqBody.price]);
+            console.log(result);
             
             
         }
         catch(err){
             console.log(err);
         }
-        res.send(`${name} with price of ${price} added successfully`)
+        res.send(`${reqBody.name} with price of ${reqBody.price} added successfully`)
         
     },
 
@@ -42,9 +54,30 @@ module.exports = {
 
 
 
-//todo: export all products
-exportProducts: async function(){
+//todo: export all products - CHECK IF WORKS
+exportProducts: async function(req, res, next){
     const sql = "SELECT name, description, price FROM products ORDER BY name ASC;"
+
+    try{
+        const result = await database.query(sql);
+
+        const now = new Date().getTime();
+        const filePath = path.join(__dirname, '../files', `products-${now}`);
+        const stream = fs.createWriteStream(filePath);
+
+        stream.on('open', function(){
+            stream.write(JSON.stringify(result[0]));
+            stream.end;
+        });
+
+        stream.on('finish', function(){
+            res.send(`PRODUCTS export file created at ${filePath}`)
+        });
+
+    }
+    catch(err){
+        console.log(err);
+    }
 },
 
 

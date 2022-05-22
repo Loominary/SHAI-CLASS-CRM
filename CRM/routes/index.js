@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const cm = require('../controllers/customers');
 const pm = require('../controllers/products')
 const ordersModule = require('../controllers/orders');
-const path = require('path');
+const path = require('path');;
 
 
 /* GET home page. */
@@ -11,7 +10,14 @@ router.get('/', function (req, res, next) {
   res.send('this is the home page. use further directory (/customers, /products or /orders)')
 });
 
-//Products
+/* GET chat page */
+router.get('/chat', function (req, res, next) {
+  const filePath = path.join(__dirname, '../client', 'chat.html')
+  res.sendFile(filePath);
+});
+
+
+//_______________________________PRODUCTS__________________________________________
 router.get('/products-home', function(req, res, next){
   const filePath = path.join(__dirname, '../client', 'products-home.html')
   res.sendFile(filePath);
@@ -26,32 +32,12 @@ router.delete('/products', pm.deleteProduct);
 router.get('/products/search/id', pm.searchProducts);
 
 
-//Customers
-router.get('/customers-home', function(req, res, next){
-  const filePath = path.join(__dirname, '../client', 'customers-home.html')
-  res.sendFile(filePath);
-  //res.sendFile(`${__dirname}/client/customers-home.html`);
-})
 
-router.get('/customers', cm.customersList);
-router.post('/customers', cm.addCustomer);
-
-//todo: delete customer
-//router.delete('/customers', cm.deleteCustomer)
-
-//todo: export all customers to file
-router.get('/customers/export', cm.exportCustomers)
 
 //todo: sort customers by column
 //L A T E R
 
-//todo: search in customers by parameter (name, email, country)
-//router.get('/customers', cm.findCustomer)
-
-//todo: edit customers 
-//router.patch('/customers', cm.updateCustomer)
-
-    
+ 
 //todo: view more details of a customer
 //router.get('/customer-details', cm.viewCustomer)
 
@@ -59,16 +45,9 @@ router.get('/customers/export', cm.exportCustomers)
 
 
 
-//TODO PRODUCTS____________________
-//todo: export all products
-//todo: search in products by param
-//todo: edit details of products
-//todo: delete product
 
 
-
-
-//Orders
+//_____________________________________ORDERS____________________________________________
 router.get('/orders', ordersModule.ordersList);
 //route.get('/orders-add', ordersModule.addOrder);
 

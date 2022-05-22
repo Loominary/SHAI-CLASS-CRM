@@ -3,34 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>boomshakalaka</title>
+    <title>Products-home</title>
 </head>
 <body>
-    <h3>Export customer</h3>
-    <form method="get" action="/customers/export">
-        <button type="submit">Export Customers</button>
+    <h3>Export product</h3>
+    <form method="get" action="/products/export">
+        <button type="submit">Export products</button>
     </form>
 
-    <h3>Add customer</h3>
-    <form method="post" action="customers">
+    <h3>Add product</h3>
+    <form method="post" action="products">
         <div>
             <label>Name</label>
             <input type="text" name="name">
         </div>
         <div>
-            <label>Phone</label>
-            <input type="text" name="phone">
+            <label>Description</label>
+            <input type="text" name="desc">
         </div>
         <div>
-            <label>Email</label>
-            <input type="text" name="email">
+            <label>Price</label>
+            <input type="number" name="price">
         </div>
-        <div>
-            <label>Country</label>
-            <input type="text" name="country">
-        </div>
+       <!-- todo: add image -->
     
-        <button type="submit">Add Customer</button>
+        <button type="submit">Add product</button>
     </form>
 </body>
 </html>
